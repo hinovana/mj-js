@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JsUnit OnLoad Tests</title>
+    <link rel="stylesheet" type="text/css" href="../css/jsUnitStyle.css">
+    <script language="JavaScript" type="text/javascript" src="../app/jsUnitCore.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../../lib/MJ.js"></script>
+    <script language="JavaScript" type="text/javascript">
+      function testNew1() {
+        var shuntsu = new MJ.Shuntsu("1m");
+        assertTrue(shuntsu.isShuntsu);
+        assertFalse(shuntsu.isKotsu);
+        assertFalse(shuntsu.isKantsu);
+        assertFalse(shuntsu.isNaki);
+        assertArrayEquals(shuntsu.hais, ["1m", "2m", "3m"]);
+      }
+
+      function testNew2() {
+        var shuntsu = new MJ.Shuntsu("3s");
+        assertTrue(shuntsu.isShuntsu);
+        assertFalse(shuntsu.isKotsu);
+        assertFalse(shuntsu.isKantsu);
+        assertFalse(shuntsu.isNaki);
+        assertArrayEquals(shuntsu.hais, ["3s", "4s", "5s"]);
+      }
+
+      function testNew3() {
+        var ex = null;
+        try {
+          var shuntsu = new MJ.Shuntsu("9p");
+        } catch (e) {
+          ex = e;
+        }
+        assertNotNull(ex);
+      }
+
+      function testSetNaki1() {
+        var shuntsu = new MJ.Shuntsu("1m");
+        shuntsu.setNaki(1);
+        assertTrue(shuntsu.isNaki);
+        assertEquals(shuntsu.nakiHai, 1);
+      }
+
+      function testSetNaki2() {
+        var shuntsu = new MJ.Shuntsu("1m");
+        shuntsu.setNaki(1);
+        shuntsu.setNaki(-1);
+        assertFalse(shuntsu.isNaki);
+        assertEquals(shuntsu.nakiHai, -1);
+      }
+    </script>
+  </head>
+
+  <body>
+	<h1>MJ Tests</h1>
+	<p>This page contains tests for the JsUnit Framework. To see them, take a look at the source.</p>
+  </body>
+</html>

@@ -1,0 +1,565 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>MJ Tests</title>
+    <link rel="stylesheet" type="text/css" href="../css/jsUnitStyle.css">
+    <script language="JavaScript" type="text/javascript" src="../app/jsUnitCore.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../../lib/MJ.js"></script>
+    <script language="JavaScript" type="text/javascript">
+        function testNew() {
+            var tehai = new MJ.Tehai();
+	    assertNotNull(tehai);
+        }
+
+	function testIsValidPai() {
+            var tehai = new MJ.Tehai();
+	    assertTrue(tehai.__isValidPai("1m") ? true : false);
+	    assertTrue(tehai.__isValidPai("2m") ? true : false);
+	    assertTrue(tehai.__isValidPai("3m") ? true : false);
+	    assertTrue(tehai.__isValidPai("4m") ? true : false);
+	    assertTrue(tehai.__isValidPai("5m") ? true : false);
+	    assertTrue(tehai.__isValidPai("6m") ? true : false);
+	    assertTrue(tehai.__isValidPai("7m") ? true : false);
+	    assertTrue(tehai.__isValidPai("8m") ? true : false);
+	    assertTrue(tehai.__isValidPai("9m") ? true : false);
+	    assertTrue(tehai.__isValidPai("1s") ? true : false);
+	    assertTrue(tehai.__isValidPai("2s") ? true : false);
+	    assertTrue(tehai.__isValidPai("3s") ? true : false);
+	    assertTrue(tehai.__isValidPai("4s") ? true : false);
+	    assertTrue(tehai.__isValidPai("5s") ? true : false);
+	    assertTrue(tehai.__isValidPai("6s") ? true : false);
+	    assertTrue(tehai.__isValidPai("7s") ? true : false);
+	    assertTrue(tehai.__isValidPai("8s") ? true : false);
+	    assertTrue(tehai.__isValidPai("9s") ? true : false);
+	    assertTrue(tehai.__isValidPai("1p") ? true : false);
+	    assertTrue(tehai.__isValidPai("2p") ? true : false);
+	    assertTrue(tehai.__isValidPai("3p") ? true : false);
+	    assertTrue(tehai.__isValidPai("4p") ? true : false);
+	    assertTrue(tehai.__isValidPai("5p") ? true : false);
+	    assertTrue(tehai.__isValidPai("6p") ? true : false);
+	    assertTrue(tehai.__isValidPai("7p") ? true : false);
+	    assertTrue(tehai.__isValidPai("8p") ? true : false);
+	    assertTrue(tehai.__isValidPai("9p") ? true : false);
+	    assertTrue(tehai.__isValidPai("東") ? true : false);
+	    assertTrue(tehai.__isValidPai("南") ? true : false);
+	    assertTrue(tehai.__isValidPai("西") ? true : false);
+	    assertTrue(tehai.__isValidPai("北") ? true : false);
+	    assertTrue(tehai.__isValidPai("白") ? true : false);
+	    assertTrue(tehai.__isValidPai("發") ? true : false);
+	    assertTrue(tehai.__isValidPai("中") ? true : false);
+	    assertFalse(tehai.__isValidPai("あ") ? true : false);
+	    assertFalse(tehai.__isValidPai("0") ? true : false);
+	    assertFalse(tehai.__isValidPai("A") ? true : false);
+	}
+
+        function testAdd() {
+            var tehai = new MJ.Tehai();
+	    assertNull(tehai.getAtari());
+	    assertTrue(tehai.add("1m"));
+	    assertTrue(tehai.add("1m"));
+	    assertTrue(tehai.add("1m"));
+	    assertTrue(tehai.add("1m"));
+	    assertFalse(tehai.add("1m"));
+	    assertTrue(tehai.add("2m"));
+	    assertTrue(tehai.add("2m"));
+	    assertTrue(tehai.add("2m"));
+	    assertTrue(tehai.add("2m"));
+	    assertTrue(tehai.add("3m"));
+	    assertTrue(tehai.add("3m"));
+	    assertTrue(tehai.add("3m"));
+	    assertTrue(tehai.add("3m"));
+	    assertTrue(tehai.add("4m"));
+	    assertTrue(tehai.add("4m", true));
+	    //assertFalse(tehai.add("4m"));
+	    assertTrue(tehai.add("4m"));
+	    assertEquals("4m", tehai.getAtari());
+        }
+
+        function testAddAll() {
+            var tehai = new MJ.Tehai();
+	    assertTrue(tehai.addAll(["1m", "1m", "1m", "1m",
+	                             "2m", "2m", "2m", "2m",
+				     "3m", "3m", "3m", "3m",
+				     "4m", "4m"]));
+            var tehai = new MJ.Tehai();
+	    assertTrue(tehai.addAll(["1m", "1m", "1m", "1m",
+	                             "2m", "2m", "2m", "2m",
+				     "3m", "3m", "3m", "3m",
+				     "4m", "4m"], "4m"));
+            var tehai = new MJ.Tehai();
+	    assertFalse(tehai.addAll(["1m", "1m", "1m", "1m", "1m",
+	                              "2m", "2m", "2m", "2m",
+				      "3m", "3m", "3m", "3m",
+				      "4m", "4m"], "4m"));
+            var tehai = new MJ.Tehai();
+	    assertFalse(tehai.addAll(["1m", "1m", "1m", "1m",
+	                              "2m", "2m", "2m", "2m",
+				      "3m", "3m", "3m", "3m",
+				      "4m", "4m"], "5m"));
+        }
+
+        function testRemove() {
+            var tehai = new MJ.Tehai();
+	    assertFalse(tehai.remove("1m"));
+	    assertTrue(tehai.add("1m", true));
+	    assertEquals("1m", tehai.getAtari());
+	    assertTrue(tehai.remove("1m"));
+	    assertNull(tehai.getAtari());
+        }
+
+        function testSetAtari() {
+            var tehai = new MJ.Tehai();
+	    assertFalse(tehai.setAtari("1m"));
+	    assertTrue(tehai.add("1m"));
+	    assertTrue(tehai.setAtari("1m"));
+	    assertEquals("1m", tehai.getAtari());
+	}
+
+	function testGet() {
+            var tehai = new MJ.Tehai();
+	    assertNull(tehai.get());
+	    assertTrue(tehai.add("1m"));
+	    assertTrue(tehai.add("1m"));
+	    assertTrue(tehai.add("1m"));
+	    assertTrue(tehai.add("1m"));
+	    assertTrue(tehai.add("2m"));
+	    assertTrue(tehai.add("2m"));
+	    assertTrue(tehai.add("2m"));
+	    assertTrue(tehai.add("2m"));
+	    assertTrue(tehai.add("3m"));
+	    assertTrue(tehai.add("3m"));
+	    assertTrue(tehai.add("3m"));
+	    assertTrue(tehai.add("3m"));
+	    assertTrue(tehai.add("4m"));
+	    assertTrue(tehai.add("4m", true));
+	    var ar = tehai.get();
+	    assertNotNull(ar);
+	    assertEquals(14, ar.length);
+	    var expect = ["1m", "1m", "1m", "1m", "2m", "2m", "2m", "2m",
+                          "3m", "3m", "3m", "3m", "4m", "4m"]
+	    for (var i = 0; i < 14; i++) {
+	        assertEquals(expect[i], ar[i]);
+	    }
+	}
+
+        function testGetAgariPattern1() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("1m,2m,3m,4m,5m,6m,7s,8s,9s,2p,3p,4p,9p,9p".split(/,/), "1m");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('1m', agari_pattern[0].atari_pai);
+            assertEquals('9p', agari_pattern[0].tehai.atama);
+            assertArrayEquals([], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['1m', '4m', '7s', '2p'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern2() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("2m,3m,4m,4m,5m,6m,6s,7s,8s,2p,3p,4p,8p,8p".split(/,/), "2m");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('2m', agari_pattern[0].atari_pai);
+            assertEquals('8p', agari_pattern[0].tehai.atama);
+            assertArrayEquals([], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['2m', '4m', '6s', '2p'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern3() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("2m,3m,4m,4m,5m,6m,4m,5m,6m,2p,3p,4p,8p,8p".split(/,/), "2m");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('2m', agari_pattern[0].atari_pai);
+            assertEquals('8p', agari_pattern[0].tehai.atama);
+            assertArrayEquals([], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['2m', '4m', '4m', '2p'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern4() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("1s,2s,3s,4s,5s,6s,7s,8s,9s,2s,3s,4s,9p,9p".split(/,/), "9p");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('9p', agari_pattern[0].atari_pai);
+            assertEquals('9p', agari_pattern[0].tehai.atama);
+            assertArrayEquals([], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['1s', '2s', '4s', '7s'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern5() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("1m,1m,1m,2m,2m,3m,4m,5m,6m,7m,8m,9m,9m,9m".split(/,/), "9m");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('9m', agari_pattern[0].atari_pai);
+            assertEquals('2m', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['1m', '9m'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['3m', '6m'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern6() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("1s,1s,1s,2s,2s,3s,4s,5s,6s,7s,8s,9s,9s,9s".split(/,/), "2s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('2s', agari_pattern[0].atari_pai);
+            assertEquals('2s', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['1s', '9s'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['3s', '6s'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern7() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("1s,1s,1s,3s,3s,3s,東,東,東,9m,9m,9m,9p,9p".split(/,/), "3s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('3s', agari_pattern[0].atari_pai);
+            assertEquals('9p', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['9m', '1s', '3s', '東'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern8() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("5p,5p,5p,3m,3m,3m,北,北,北,9p,9p,9p,白,白".split(/,/), "白");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('白', agari_pattern[0].atari_pai);
+            assertEquals('白', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['3m', '5p', '9p', '北'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern9() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("發,發,發,白,白,白,中,中,中,2s,3s,4s,1m,1m".split(/,/), "中");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('中', agari_pattern[0].atari_pai);
+            assertEquals('1m', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['白', '發', '中'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['2s'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern10() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("發,發,發,白,白,白,中,中,中,南,南,南,北,北".split(/,/), "中");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('中', agari_pattern[0].atari_pai);
+            assertEquals('北', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['南', '白', '發', '中'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern11() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("發,發,發,白,白,白,中,中,中,東,東,東,西,西".split(/,/), "西");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('西', agari_pattern[0].atari_pai);
+            assertEquals('西', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['東', '白', '發', '中'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern12() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("東,東,東,西,西,西,中,中,中,北,北,北,發,發".split(/,/), "西");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('西', agari_pattern[0].atari_pai);
+            assertEquals('發', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['東', '西', '北', '中'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern13() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("東,東,東,西,西,西,中,中,中,北,北,北,南,南".split(/,/), "西");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('西', agari_pattern[0].atari_pai);
+            assertEquals('南', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['東', '西', '北', '中'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern14() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("東,東,東,西,西,西,白,白,北,北,北,南,南,南".split(/,/), "西");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('西', agari_pattern[0].atari_pai);
+            assertEquals('白', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['東', '南', '西', '北'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern15() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("東,東,東,西,西,西,北,北,北,南,南,2s,2s,2s".split(/,/), "2s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('2s', agari_pattern[0].atari_pai);
+            assertEquals('南', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['2s', '東', '西', '北'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern16() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("東,東,東,西,西,西,5m,5m,北,北,北,南,南,南".split(/,/), "南");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('南', agari_pattern[0].atari_pai);
+            assertEquals('5m', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['東', '南', '西', '北'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern16() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("東,東,東,1p,1p,西,西,西,北,北,北,南,南,南".split(/,/), "北");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('北', agari_pattern[0].atari_pai);
+            assertEquals('1p', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['東', '南', '西', '北'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern17() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("2s,2s,2s,3s,3s,4s,4s,4s,發,發,發,8s,8s,8s".split(/,/), "3s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('3s', agari_pattern[0].atari_pai);
+            assertEquals('3s', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['2s', '4s', '8s', '發'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern18() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("2s,2s,2s,3s,3s,4s,4s,4s,發,發,發,8s,8s,8s".split(/,/), "3s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('3s', agari_pattern[0].atari_pai);
+            assertEquals('3s', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['2s', '4s', '8s', '發'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern19() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("發,發,發,2s,2s,2s,3s,3s,3s,6s,6s,8s,8s,8s".split(/,/), "發");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('發', agari_pattern[0].atari_pai);
+            assertEquals('6s', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['2s', '3s', '8s', '發'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern20() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("1s,1s,1s,9m,9m,9m,1p,1p,1p,9s,9s,9s,1m,1m".split(/,/), "9m");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('9m', agari_pattern[0].atari_pai);
+            assertEquals('1m', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['9m', '1s', '9s', '1p'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern21() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("9s,9s,9s,1m,1m,1s,1s,1s,9m,9m,9m,9p,9p,9p".split(/,/), "1s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('1s', agari_pattern[0].atari_pai);
+            assertEquals('1m', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['9m', '1s', '9s', '9p'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern22() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("1m,1m,1m,2m,2m,2m,3m,3m,3m,1p,2p,3p,9p,9p".split(/,/), "3p");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(2, agari_pattern.length);
+            assertEquals('3p', agari_pattern[0].atari_pai);
+            assertEquals('9p', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['1m', '2m', '3m'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['1p'], agari_pattern[0].tehai.shuntsu);
+            assertEquals('3p', agari_pattern[1].atari_pai);
+            assertEquals('9p', agari_pattern[1].tehai.atama);
+            assertArrayEquals([], agari_pattern[1].tehai.koutsu);
+            assertArrayEquals(['1m', '1m', '1m', '1p'], agari_pattern[1].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern23() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("1m,1m,1m,2m,3m,4m,4m,4m,1s,2s,3s,1p,2p,3p".split(/,/), "3p");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(2, agari_pattern.length);
+            assertEquals('3p', agari_pattern[0].atari_pai);
+            assertEquals('1m', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['4m'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['1m', '1s', '1p'], agari_pattern[0].tehai.shuntsu);
+            assertEquals('3p', agari_pattern[1].atari_pai);
+            assertEquals('4m', agari_pattern[1].tehai.atama);
+            assertArrayEquals(['1m'], agari_pattern[1].tehai.koutsu);
+            assertArrayEquals(['2m', '1s', '1p'], agari_pattern[1].tehai.shuntsu);
+        }
+
+        function testGetAgariPattern24() {
+            var tehai = new MJ.Tehai();
+            tehai.addAll("1m,1m,1m,2m,2m,2m,3m,3m,3m,4m,4m,4m,2p,2p".split(/,/), "2p");
+            var agari_pattern = tehai.getAgariPattern();
+            //assertEquals(3, agari_pattern.length);
+            assertEquals(2, agari_pattern.length);
+            assertEquals('2p', agari_pattern[0].atari_pai);
+            assertEquals('2p', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['1m', '2m', '3m', '4m'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+            assertEquals('2p', agari_pattern[1].atari_pai);
+            assertEquals('2p', agari_pattern[1].tehai.atama);
+            assertArrayEquals(['4m'], agari_pattern[1].tehai.koutsu);
+            assertArrayEquals(['1m', '1m', '1m'], agari_pattern[1].tehai.shuntsu);
+            // 拾わないことにした
+            //assertEquals('2p', agari_pattern[2].atari_pai);
+            //assertEquals('2p', agari_pattern[2].tehai.atama);
+            //assertArrayEquals(['1m'], agari_pattern[2].tehai.koutsu);
+            //assertArrayEquals(['2m', '2m', '2m'], agari_pattern[2].tehai.shuntsu);
+        }
+
+        function testGetAgariPatternPinfu1() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["3m", "4m", "5m", "5m", "6m", "7m",
+	                  "2p", "3p", "4p", "6s", "7s", "8s",
+			  "3s", "3s"], "6s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('6s', agari_pattern[0].atari_pai);
+            assertEquals('3s', agari_pattern[0].tehai.atama);
+            assertArrayEquals([], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['3m', '5m', '6s', '2p'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPatternPinfu2() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["3m", "4m", "5m", "6m", "7m", "8m",
+	                  "2p", "3p", "4p", "7s", "8s", "9s",
+			  "南", "南"], "9s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('9s', agari_pattern[0].atari_pai);
+            assertEquals('南', agari_pattern[0].tehai.atama);
+            assertArrayEquals([], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['3m', '6m', '7s', '2p'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPatternPinfu3() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "1m", "2m", "2m", "3m", "3m",
+	                  "2s", "3s", "4s", "7s", "8s", "9s",
+			  "4m", "4m"], "9s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(2, agari_pattern.length);
+            assertEquals('9s', agari_pattern[0].atari_pai);
+            assertEquals('1m', agari_pattern[0].tehai.atama);
+            assertArrayEquals([], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['2m', '2m', '2s', '7s'], agari_pattern[0].tehai.shuntsu);
+            assertEquals('9s', agari_pattern[1].atari_pai);
+            assertEquals('4m', agari_pattern[1].tehai.atama);
+            assertArrayEquals([], agari_pattern[1].tehai.koutsu);
+            assertArrayEquals(['1m', '1m', '2s', '7s'], agari_pattern[1].tehai.shuntsu);
+        }
+
+        function testGetAgariPatternPinfu4() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "2m", "3m", "3m", "4m", "5m",
+	                  "2s", "3s", "4s", "7s", "8s", "9s",
+			  "1m", "1m"], "9s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('9s', agari_pattern[0].atari_pai);
+            assertEquals('1m', agari_pattern[0].tehai.atama);
+            assertArrayEquals([], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['1m', '3m', '2s', '7s'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPatternPinfu5Not() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "1m", "1m", "2m", "4m", "5m",
+	                  "2s", "3s", "4s", "7s", "8s", "9s",
+			  "9m", "9m"], "9s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(0, agari_pattern.length);
+        }
+
+        function testGetAgariPatternTanyao1() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["2m", "2m", "2m", "5m", "5m", "5m",
+	                  "6s", "7s", "8s", "2p", "3p", "4p",
+			  "7p", "7p"], "2m");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('2m', agari_pattern[0].atari_pai);
+            assertEquals('7p', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['2m', '5m'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['6s', '2p'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPatternTanyao2() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["2m", "2m", "2m", "5m", "6m", "7m",
+	                  "5s", "6s", "7s", "5p", "6p", "7p",
+			  "8p", "8p"], "2m");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('2m', agari_pattern[0].atari_pai);
+            assertEquals('8p', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['2m'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals(['5m', '5s', '5p'], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPatternTanyao3() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["5m", "5m", "5m", "8s", "8s", "8s",
+	                  "2p", "2p", "2p", "7p", "7p", "7p",
+			  "2m", "2m"], "8s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('8s', agari_pattern[0].atari_pai);
+            assertEquals('2m', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['5m', '8s', '2p', '7p'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+
+        function testGetAgariPatternTanyao4Not() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["5m", "5m", "5m", "8s", "8s", "8s",
+	                  "2p", "2p", "2p", "7p", "7p", "7p",
+			  "1m", "1m"], "8s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertEquals('8s', agari_pattern[0].atari_pai);
+            assertEquals('1m', agari_pattern[0].tehai.atama);
+            assertArrayEquals(['5m', '8s', '2p', '7p'], agari_pattern[0].tehai.koutsu);
+            assertArrayEquals([], agari_pattern[0].tehai.shuntsu);
+        }
+    </script>
+</head>
+
+<body>
+<h1>MJ Tests</h1>
+
+<p>This page contains tests for the JsUnit Framework. To see them, take a look at the source.</p>
+</body>
+</html>

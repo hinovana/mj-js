@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JsUnit Tests</title>
+    <link rel="stylesheet" type="text/css" href="../css/jsUnitStyle.css">
+    <script language="JavaScript" type="text/javascript" src="../app/jsUnitCore.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../../lib/MJ.js"></script>
+    <script language="JavaScript" type="text/javascript">
+        function testIsChiitoitsu1() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "1m", "5m", "5m", "9m", "9m",
+	                  "8s", "8s", "2p", "2p", "3p", "3p",
+			  "南", "南"], "8s");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertTrue(MJ.Hantei._2Han.isChiitoitsu(agari_pattern[0]));
+        }
+
+        function testIsChiitoitsu2() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["2m", "2m", "3m", "3m", "4m", "4m",
+	                  "7m", "7m", "發", "發", "北", "北",
+			  "南", "南"], "南");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(1, agari_pattern.length);
+            assertTrue(MJ.Hantei._2Han.isChiitoitsu(agari_pattern[0]));
+        }
+
+        function testIsChiitoitsu3() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["2m", "2m", "2m", "4m", "4m", "4m",
+	                  "7m", "7m", "發", "發", "北", "北",
+			  "南", "南"], "南");
+            var agari_pattern = tehai.getAgariPattern();
+
+            // あがってない
+            assertEquals(0, agari_pattern.length);
+        }
+
+        function testIsChiitoitsu4() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["2m", "2m", "2m", "2m", "4m", "4m",
+	                  "7m", "7m", "發", "發", "北", "北",
+			  "南", "南"], "南");
+            var agari_pattern = tehai.getAgariPattern();
+
+            // あがってない（4枚使いは認めてない）
+            assertEquals(0, agari_pattern.length);
+        }
+
+        function testIsChiitoitsu5() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["2m", "2m", "3m", "3m", "4m", "4m",
+	                  "5m", "5m", "6m", "6m", "7m", "7m",
+			  "南", "南"], "南");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(2, agari_pattern.length);
+            assertTrue(MJ.Hantei._2Han.isChiitoitsu(agari_pattern[0]));
+            assertFalse(MJ.Hantei._2Han.isChiitoitsu(agari_pattern[1]));
+        }
+    </script>
+</head>
+
+<body>
+<h1>MJ Tests</h1>
+
+<p>This page contains tests for the JsUnit Framework. To see them, take a look at the source.</p>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JsUnit Tests</title>
+    <link rel="stylesheet" type="text/css" href="../css/jsUnitStyle.css">
+    <script language="JavaScript" type="text/javascript" src="../app/jsUnitCore.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../../lib/MJ.js"></script>
+    <script language="JavaScript" type="text/javascript">
+        function testIsTyanta1() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "2m", "3m", "9m", "9m", "9m",
+	                  "1s", "2s", "3s", "7p", "8p", "9p",
+			  "西", "西"], "3s");
+            var agari_pattern = tehai.getAgariPattern();
+	    assertTrue(MJ.Hantei._2Han.isTyanta(agari_pattern[0]));
+        }
+
+        function testIsTyanta2() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "2m", "3m", "1s", "2s", "3s",
+	                  "1p", "2p", "3p", "7p", "8p", "9p",
+			  "西", "西"], "1s");
+            var agari_pattern = tehai.getAgariPattern();
+	    assertTrue(MJ.Hantei._2Han.isTyanta(agari_pattern[0]));
+        }
+
+        function testIsTyanta3() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "2m", "3m", "2s", "3s", "4s",
+	                  "1p", "2p", "3p", "7p", "8p", "9p",
+			  "西", "西"], "4s");
+            var agari_pattern = tehai.getAgariPattern();
+	    assertFalse(MJ.Hantei._2Han.isTyanta(agari_pattern[0]));
+        }
+
+        function testIsTyanta4() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "1m", "1m", "2m", "2m", "2m",
+	                  "1s", "2s", "3s", "7p", "8p", "9p",
+			  "西", "西"], "9p");
+            var agari_pattern = tehai.getAgariPattern();
+	    assertFalse(MJ.Hantei._2Han.isTyanta(agari_pattern[0]));
+        }
+
+        function testIsTyanta5() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "1m", "1m", "2m", "2m", "2m",
+	                  "3m", "3m", "3m", "7p", "8p", "9p",
+			  "西", "西"], "9p");
+            var agari_pattern = tehai.getAgariPattern();
+
+            // 三暗刻 or チャンタ
+            assertEquals(2, agari_pattern.length);
+
+            for (var i = 0; i < agari_pattern.length; i++) {
+                if (agari_pattern[i].tehai.koutsu.length) {
+                    // 暗刻がある方が三暗刻
+                    assertFalse(MJ.Hantei._2Han.isTyanta(agari_pattern[i]));
+                } else {
+                    // 暗刻がないならチャンタ
+                    assertTrue(MJ.Hantei._2Han.isTyanta(agari_pattern[i]));
+                }
+            }
+        }
+
+        function testIsTyanta6() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "1m", "1m", "1s", "1s", "1s",
+	                  "1p", "2p", "3p", "7p", "8p", "9p",
+			  "3m", "3m"], "3m");
+            var agari_pattern = tehai.getAgariPattern();
+	    assertFalse(MJ.Hantei._2Han.isTyanta(agari_pattern[0]));
+        }
+
+        function testIsTyanta7() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "1m", "2m", "2m", "3m", "3m",
+	                  "7m", "7m", "8m", "8m", "9m", "9m",
+			  "9s", "9s"], "7m");
+            var agari_pattern = tehai.getAgariPattern();
+            assertEquals(2, agari_pattern.length);
+            assertTrue(agari_pattern[0].tehai.is_chiitoi);
+            assertFalse(MJ.Hantei._2Han.isTyanta(agari_pattern[0]));
+            assertFalse(agari_pattern[1].tehai.is_chiitoi);
+            assertTrue(MJ.Hantei._2Han.isTyanta(agari_pattern[1]));
+        }
+    </script>
+</head>
+
+<body>
+<h1>MJ Tests</h1>
+
+<p>This page contains tests for the JsUnit Framework. To see them, take a look at the source.</p>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja" dir="ltr">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>MJの簡単な利用例 - MJ</title>
+
+<!-- MJを読み込む -->
+<script type="text/javascript" src="../lib/MJ.js" charset="utf-8"></script>
+
+<!-- jQueryを読み込む -->
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("jquery", "1.4");</script>
+
+<!-- このファイル用のスクリプト -->
+<script type="text/javascript">
+// 画像ファイル置き場
+var IMG_DIR = 'img';
+
+$(function() {
+	randomTehai();
+});
+
+/**
+ * 手牌をランダムに生成し、役を判定します
+ * 結果は#tehai_viewに表示されます
+ */
+function randomTehai() {
+	// 手牌オブジェクトを生成
+	var tehai = new MJ.Tehai();
+
+	// 手牌にランダムで加えていく（最初の牌を当たり牌にする）
+	for (var i = 0; i < 14; i++) {
+		var pai = null;
+		do {
+			pai = tehai.ALL_PAI[Math.floor(Math.random() * tehai.ALL_PAI.length)];
+		} while (tehai.pais[pai] >= 4);
+		tehai.add(pai, (i == 0));
+	}
+
+	// 役を判定する
+	var yaku_array = MJ.Hantei.getResult(tehai) || [];
+
+	// 手牌を表示する
+	showTehai(tehai);
+
+	// 役を表示する
+	showYaku(yaku_array);
+}
+
+/**
+ * 手牌を表示する
+ *
+ * @param tehai MJ.Tehaiオブジェクト
+ */
+function showTehai(tehai) {
+	var pai_array = tehai.get();
+	var img_array = [];
+	for (var i = 0; i < pai_array.length; i++) {
+		if (!pai_array[i]) {
+			$('#debug').html(pai_array.join(', '));
+			continue;
+		}
+		img_array.push(pai2img(pai_array[i]));
+	}
+	$('#tehai_view .tehai_image').html(img_array.join(''));
+}
+
+/**
+ * 牌をimgタグに変換する
+ *
+ * @param pai 牌
+ * @return imgタグ
+ */
+function pai2img(pai) {
+	switch (pai) {
+	case '白':
+		pai = "d1";
+		break;
+	case '發':
+		pai = "d2";
+		break;
+	case '中':
+		pai = "d3";
+		break;
+	case '東':
+		pai = "f1";
+		break;
+	case '西':
+		pai = "f2";
+		break;
+	case '南':
+		pai = "f3";
+		break;
+	case '北':
+		pai = "f4";
+		break;
+	default:
+		pai = pai.split('').reverse().join('');
+		break;
+	}
+	return '<img src="' + IMG_DIR + '/MJ' + pai + 'plane.png" />';
+}
+
+/**
+ * 役を表示する
+ *
+ * @param yaku_array 役一覧
+ */
+function showYaku(yaku_array) {
+	if (yaku_array.length) {
+		var li_array = [];
+		for (var i = 0; i < yaku_array.length; i++) {
+			li_array.push('<li>' + yaku_array[i].name + '</li>');
+		}
+		$('#tehai_view .yaku_array').html('<ul>' + li_array.join('') + '</ul>');
+	} else {
+		$('#tehai_view .yaku_array').html('<p>役無し</p>');
+	}
+}
+
+/**
+ * 自動更新する
+ *
+ * @param f フォーム
+ */
+function autoUpdate(f) {
+	if (f.state.value == 'stop') {
+		$('#update').attr('disabled', true);
+		$('#auto_start').hide();
+		$('#auto_stop').show();
+		var i = parseInt(f.interval.value);
+		f.interval.disabled = true;
+		f.state.value = 'start';
+		autoUpdate.timerId = setTimeout(function() {
+			randomTehai();
+			autoUpdate.timerId = setTimeout(arguments.callee, i);
+		}, i);
+	} else {
+		clearTimeout(autoUpdate.timerId);
+		$('#auto_stop').hide();
+		$('#auto_start').show();
+		$('#update').attr('disabled', false);
+		f.interval.disabled = false;
+		f.state.value = 'stop';
+	}
+}
+</script>
+
+</head>
+
+<body>
+
+<h1>MJの簡単な利用例</h1>
+
+<p>手牌をランダムに生成し、役を判定します。</p>
+
+<div id="tehai_view">
+	<div class="tehai_image"></div>
+	<div class="yaku_array"></div>
+</div>
+
+<div id="debug">
+</div>
+
+<form action="#" onsubmit="randomTehai(); return false">
+	<div>
+		<input id="update" type="submit" value="手牌を新しく生成する" />
+	</div>
+</form>
+
+<br />
+
+<form action="#" onsubmit="autoUpdate(this); return false">
+	<input type="hidden" name="state" value="stop" />
+	<div>
+		更新間隔：<input type="text" name="interval" value="1000" />ミリ秒
+		<input id="auto_start" type="submit" value="自動更新を開始する" />
+		<input id="auto_stop" style="display:none" type="submit" value="自動更新を停止する" />
+	</div>
+</form>
+
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JsUnit Tests</title>
+    <link rel="stylesheet" type="text/css" href="../css/jsUnitStyle.css">
+    <script language="JavaScript" type="text/javascript" src="../app/jsUnitCore.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../../lib/MJ.js"></script>
+    <script language="JavaScript" type="text/javascript">
+        function testIsToitoihou1() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["5m", "5m", "5m", "8m", "8m", "8m",
+	                  "2s", "2s", "2s", "1p", "1p", "1p",
+			  "西", "西"], "5m");
+            var agari_pattern = tehai.getAgariPattern();
+	    assertTrue(MJ.Hantei._2Han.isToitoihou(agari_pattern[0]));
+        }
+
+        function testIsToitoihou2() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["5m", "6m", "7m", "8m", "8m", "8m",
+	                  "2s", "2s", "2s", "1p", "1p", "1p",
+			  "西", "西"], "5m");
+            var agari_pattern = tehai.getAgariPattern();
+	    assertFalse(MJ.Hantei._2Han.isToitoihou(agari_pattern[0]));
+        }
+    </script>
+</head>
+
+<body>
+<h1>MJ Tests</h1>
+
+<p>This page contains tests for the JsUnit Framework. To see them, take a look at the source.</p>
+</body>
+</html>

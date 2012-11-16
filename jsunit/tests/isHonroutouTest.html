@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JsUnit Tests</title>
+    <link rel="stylesheet" type="text/css" href="../css/jsUnitStyle.css">
+    <script language="JavaScript" type="text/javascript" src="../app/jsUnitCore.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../../lib/MJ.js"></script>
+    <script language="JavaScript" type="text/javascript">
+        function testIsHonroutou1() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "1m", "1m", "1p", "1p", "1p",
+	                  "9p", "9p", "9p", "南", "南", "南",
+			  "白", "白"], "9p");
+            var agari_pattern = tehai.getAgariPattern();
+	    assertTrue(MJ.Hantei._2Han.isHonroutou(agari_pattern[0]));
+        }
+
+        function testIsHonroutou2() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "1m", "9s", "9s", "1p", "1p",
+	                  "9p", "9p", "北", "北", "南", "南",
+			  "白", "白"], "南");
+            var agari_pattern = tehai.getAgariPattern();
+	    assertTrue(MJ.Hantei._2Han.isHonroutou(agari_pattern[0]));
+        }
+
+        function testIsHonroutou3() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "2m", "3m", "7m", "8m", "9m",
+	                  "9p", "9p", "9p", "南", "南", "南",
+			  "白", "白"], "南");
+            var agari_pattern = tehai.getAgariPattern();
+	    assertFalse(MJ.Hantei._2Han.isHonroutou(agari_pattern[0]));
+        }
+
+        function testIsHonroutou4() {
+            var tehai = new MJ.Tehai();
+	    tehai.addAll(["1m", "1m", "9m", "9m", "1s", "1s",
+	                  "9p", "9p", "東", "東", "南", "南",
+			  "白", "白"], "南");
+            var agari_pattern = tehai.getAgariPattern();
+	    assertEquals(1, agari_pattern.length);
+	    assertTrue(agari_pattern[0].tehai.is_chiitoi);
+	    assertTrue(MJ.Hantei._2Han.isHonroutou(agari_pattern[0]));
+        }
+    </script>
+</head>
+
+<body>
+<h1>MJ Tests</h1>
+
+<p>This page contains tests for the JsUnit Framework. To see them, take a look at the source.</p>
+</body>
+</html>

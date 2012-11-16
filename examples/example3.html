@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja" dir="ltr">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>MJの簡単な利用例 - MJ</title>
+
+<!-- MJを読み込む -->
+<script type="text/javascript" src="../lib/MJ.min.js" charset="utf-8"></script>
+
+<!-- jQueryを読み込む -->
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("jquery", "1.4");</script>
+<script type="text/javascript">google.load("jqueryui", "1.7");</script>
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7/themes/blitzer/jquery-ui.css" rel="stylesheet" />
+
+<!-- このファイル用のスクリプト -->
+<script type="text/javascript">
+// 画像ファイル置き場
+var IMG_DIR = 'img';
+
+// 残り牌
+var remain_pais = {};
+
+// 今の手牌
+var cur_tehai = [];
+
+$(function() {
+	// この辺は超適当……
+	var types = ['m', 's', 'p'];
+	for (var i = 0; i < types.length; i++) {
+		var imgs = [];
+		for (var j = 0; j < 9; j++) {
+			var pai = (j + 1) + types[i];
+			remain_pais[pai] = 4;
+			imgs.push(pai2div(pai));
+		}
+		$('#tabs-' + (i + 1)).html(imgs.join('') + '<br style="clear:both" />');
+	}
+	{
+		var pais = ['東', '西', '南', '北', '白', '發', '中'];
+		var imgs = [];
+		for (var j = 0; j < pais.length; j++) {
+			var pai = pais[j];
+			remain_pais[pai] = 4;
+			imgs.push(pai2div(pai));
+		}
+		$('#tabs-4').html(imgs.join('') + '<br style="clear:both" />');
+	}
+
+	$("#tabs img").draggable({
+		helper: 'clone'
+	});
+
+	$("#tabs").droppable({
+		drop: function(event, ui) {
+			var pai = ui.draggable.attr("alt");
+
+			if (pai.indexOf("x") == 0) {
+				// sort
+				pai = pai.replace(/^x/, "");
+				$("#pai-" + pai).text(++remain_pais[pai]);
+				cur_tehai = [];
+				ui.draggable.remove();
+				$("#tehai-make img").each(function() {
+					var pai = this.alt.replace(/^x/, "");
+					if (pai)
+						cur_tehai.push(pai);
+				});
+				$("#cur_pais_text").val(cur_tehai.join(","));
+			}
+		}
+	});
+
+	$("#tehai-make").droppable({
+		drop: function(event, ui) {
+			var pai = ui.draggable.attr("alt");
+
+			if (pai.indexOf("x") == 0)
+				return;
+
+			if (remain_pais[pai] > 0 && cur_tehai.length < 14) {
+				$("#pai-" + pai).text(--remain_pais[pai]);
+				$(this).append(pai2img(pai));
+				$("img:last", this).attr("alt", "x" + pai);
+				cur_tehai.push(pai);
+				$("#cur_pais_text").val(cur_tehai.join(","));
+			}
+		}
+	}).sortable({
+		stop: function(event, ui) {
+				cur_tehai = [];
+				$("#tehai-make img").each(function() {
+					var pai = this.alt.replace(/^x/, "");
+					if (pai)
+						cur_tehai.push(pai);
+				});
+				$("#cur_pais_text").val(cur_tehai.join(","));
+		}
+	});
+
+	$("#cur_pais_text").change(function() {
+		var v = $("#cur_pais_text").val();
+		var vv = v.split(/,/);
+		for (var i in remain_pais) {
+			remain_pais[i] = 4;
+		}
+		cur_tehai = [];
+		$("#tehai-make").html('');
+		for (var i = 0; i < vv.length; i++) {
+			var pai = vv[i];
+			if (!remain_pais[pai])
+				continue;
+			$("#pai-" + pai).text(--remain_pais[pai]);
+			$("#tehai-make").append(pai2img(pai));
+			cur_tehai.push(pai);
+		}
+	});
+
+	$("#tabs").tabs();
+});
+
+/**
+ * 牌をdivタグに変換する
+ *
+ * @param pai 牌
+ * @return divタグ
+ */
+function pai2div(pai) {
+	return '<div style="margin:0 10px; padding:5px; float:left;">'
+		+ pai2img(pai) + 'x<span id="pai-' + pai + '">4</span></div>';
+}
+
+/**
+ * 牌をimgタグに変換する
+ *
+ * @param pai 牌
+ * @return imgタグ
+ */
+function pai2img(pai) {
+	var p = null;
+	switch (pai) {
+	case '白':
+		p = "d1";
+		break;
+	case '發':
+		p = "d2";
+		break;
+	case '中':
+		p = "d3";
+		break;
+	case '東':
+		p = "f1";
+		break;
+	case '西':
+		p = "f2";
+		break;
+	case '南':
+		p = "f3";
+		break;
+	case '北':
+		p = "f4";
+		break;
+	default:
+		p = pai.split('').reverse().join('');
+		break;
+	}
+	return '<img alt="' + pai + '" src="' + IMG_DIR + '/MJ' + p + 'plane.png" />';
+}
+
+/**
+ * 入力された手牌の役を判定します
+ * 結果は#tehai_viewに表示されます
+ *
+ * 手牌は','区切りで入力し、最後の牌が当たり牌となります
+ *
+ * @param f フォーム
+ */
+function checkTehai(f) {
+	// フォームに入力された値
+	if (!f.pais.value) {
+		alert("手牌を入力してください");
+		return;
+	}
+	var pais = f.pais.value.split(/,/);
+	if (pais.length != 14) {
+		alert("手牌は14個にしてください");
+		return;
+	}
+	var atari = pais[pais.length];
+
+	// 手牌オブジェクトを生成
+	var tehai = new MJ.Tehai();
+
+	// フォームに入力された値をセット
+	if (!tehai.addAll(pais, atari)) {
+		alert("手牌を解釈できませんでした");
+		return;
+	}
+
+	// 役を判定する
+	var yaku_array = MJ.Hantei.getResult(tehai) || [];
+
+	// 手牌を表示する
+	showTehai(tehai);
+
+	// 役を表示する
+	showYaku(yaku_array);
+}
+
+/**
+ * 手牌を表示する
+ *
+ * @param tehai MJ.Tehaiオブジェクト
+ */
+function showTehai(tehai) {
+	var pai_array = tehai.get();
+	var img_array = [];
+	for (var i = 0; i < pai_array.length; i++) {
+		if (!pai_array[i]) {
+			$('#debug').html(pai_array.join(', '));
+			continue;
+		}
+		img_array.push(pai2img(pai_array[i]));
+	}
+	$('#tehai_view .tehai_image').html(img_array.join(''));
+}
+
+/**
+ * 役を表示する
+ *
+ * @param yaku_array 役一覧
+ */
+function showYaku(yaku_array) {
+	if (yaku_array.length) {
+		var li_array = [];
+		for (var i = 0; i < yaku_array.length; i++) {
+			li_array.push('<li>' + yaku_array[i].name + '</li>');
+		}
+		$('#tehai_view .yaku_array').html('<ul>' + li_array.join('') + '</ul>');
+	} else {
+		$('#tehai_view .yaku_array').html('<p>役無し</p>');
+	}
+}
+</script>
+
+</head>
+
+<body>
+
+<h1>MJの簡単な利用例</h1>
+
+<p>牌をドラッグ＆ドロップして手牌を作ってね。</p>
+
+<div id="tabs">
+	<ul>
+		<li><a href="#tabs-1">萬子</a></li>
+		<li><a href="#tabs-3">索子</a></li>
+		<li><a href="#tabs-2">筒子</a></li>
+		<li><a href="#tabs-4">字牌</a></li>
+	</ul>
+	<div id="tabs-1">
+	</div>
+	<div id="tabs-2">
+	</div>
+	<div id="tabs-3">
+	</div>
+	<div id="tabs-4">
+	</div>
+</div>
+
+<br />
+
+<div id="tehai-make" style="height:40px; border:1px solid #efefef; padding:10px;">
+</div>
+
+<br />
+
+<form action="#" onsubmit="checkTehai(this); return false">
+	<div>
+		<input id="cur_pais_text" type="text" name="pais" size="60" />
+		<input type="submit" value="手牌を判定する" />
+	</div>
+</form>
+
+<br />
+
+<div id="tehai_view">
+	<div class="tehai_image"></div>
+	<div class="yaku_array"></div>
+</div>
+
+<div id="debug">
+</div>
+
+</body>
+
+</html>

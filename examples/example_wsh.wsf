@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<package>
+	<job>
+		<runtime></runtime>
+		<script language="JScript" src="../lib/WshHelper.js"></script>
+		<script language="JScript"><![CDATA[
+/**
+ * Windows Scripting Hostで実行する例
+ *
+ * 実行方法：
+ * ダブルクリック
+ * or
+ * cscript /Nologo example_wsh.js
+ */
+
+// WshHelper.jsを使うとSpiderMonkeyと同様のコードで動く
+load('example_spidermonkey.js');
+		]]></script>
+	</job>
+</package>
